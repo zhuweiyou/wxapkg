@@ -10,15 +10,19 @@ func main() {
 	from := strings.ReplaceAll(os.Args[1], "\\", "/")
 	fromParts := strings.Split(from, "/")
 	wxid := fromParts[len(fromParts)-3]
-	fmt.Println("wxid", wxid)
 
-	err := Decrypt(from, wxid)
-	if err != nil {
-		fmt.Println(err)
-		return
+	needDecrypt := strings.HasPrefix(wxid, "wx")
+	if needDecrypt {
+		fmt.Println("wxid", wxid)
+		err := Decrypt(from, wxid)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		from += DecryptTo
 	}
 
-	err = Unpack(from + DecryptTo)
+	err := Unpack(from)
 	if err != nil {
 		fmt.Println(err)
 		return

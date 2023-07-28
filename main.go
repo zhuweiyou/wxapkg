@@ -7,7 +7,19 @@ import (
 )
 
 func main() {
-	from := strings.ReplaceAll(os.Args[1], "\\", "/")
+	defer func() {
+		os.Stdin.Read(make([]byte, 1))
+	}()
+
+	if len(os.Args) < 2 {
+		fmt.Println("请查看 readme.md 使用说明")
+		return
+	}
+
+	from := os.Args[1]
+	fmt.Println("from", from)
+
+	from = strings.ReplaceAll(from, "\\", "/")
 	fromParts := strings.Split(from, "/")
 	wxid := fromParts[len(fromParts)-3]
 

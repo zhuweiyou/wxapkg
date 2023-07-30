@@ -5,7 +5,6 @@ import (
 	"github.com/zhuweiyou/wxapkg/decrypter"
 	"github.com/zhuweiyou/wxapkg/unpacker"
 	"os"
-	"strings"
 )
 
 func main() {
@@ -18,18 +17,10 @@ func main() {
 		return
 	}
 
-	from := os.Args[1]
+	from := decrypter.FormatFrom(os.Args[1])
 	fmt.Println("from", from)
 
-	from = strings.ReplaceAll(from, "\\", "/")
-	fromPaths := strings.Split(from, "/")
-
-	var wxid string
-	wxidIndex := len(fromPaths) - 3
-	if wxidIndex >= 0 {
-		wxid = fromPaths[wxidIndex]
-	}
-	needDecrypt := strings.HasPrefix(wxid, "wx")
+	wxid, needDecrypt := decrypter.GetWxid(from)
 	if needDecrypt {
 		fmt.Println("wxid", wxid)
 		err := decrypter.DefaultDecrypt(from, wxid)

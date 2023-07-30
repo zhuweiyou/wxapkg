@@ -22,9 +22,13 @@ func main() {
 	fmt.Println("from", from)
 
 	from = strings.ReplaceAll(from, "\\", "/")
-	fromParts := strings.Split(from, "/")
-	wxid := fromParts[len(fromParts)-3]
+	fromPaths := strings.Split(from, "/")
 
+	var wxid string
+	wxidIndex := len(fromPaths) - 3
+	if wxidIndex >= 0 {
+		wxid = fromPaths[wxidIndex]
+	}
 	needDecrypt := strings.HasPrefix(wxid, "wx")
 	if needDecrypt {
 		fmt.Println("wxid", wxid)

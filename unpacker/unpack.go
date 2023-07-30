@@ -1,4 +1,4 @@
-package main
+package unpacker
 
 import (
 	"encoding/binary"
@@ -8,11 +8,13 @@ import (
 )
 
 type UnpackFile struct {
-	nameLen uint32
-	name    string
-	offset  uint32
-	size    uint32
+	NameLen uint32
+	Name    string
+	Offset  uint32
+	Size    uint32
 }
+
+const DefaultUnpackTo = "_unpack"
 
 func Unpack(from string) error {
 	f, err := os.Open(from)
@@ -22,7 +24,7 @@ func Unpack(from string) error {
 	defer f.Close()
 
 	root := filepath.Dir(from)
-	name := filepath.Base(from) + "_unpack"
+	name := filepath.Base(from) + DefaultUnpackTo
 
 	var firstMark byte
 	if err := binary.Read(f, binary.BigEndian, &firstMark); err != nil {
@@ -68,49 +70,49 @@ func Unpack(from string) error {
 
 	for i := uint32(0); i < fileCount; i++ {
 		var data UnpackFile
-		if err := binary.Read(f, binary.BigEndian, &data.nameLen); err != nil {
-			return fmt.Errorf("error reading nameLen: %v", err)
+		if err := binary.Read(f, binary.BigEndian, &data.NameLen); err != nil {
+			return fmt.Errorf("error reading NameLen: %v", err)
 		}
 
-		nameBytes := make([]byte, data.nameLen)
+		nameBytes := make([]byte, data.NameLen)
 		if _, err := f.Read(nameBytes); err != nil {
-			return fmt.Errorf("error reading name: %v", err)
+			return fmt.Errorf("error reading Name: %v", err)
 		}
-		data.name = string(nameBytes)
+		data.Name = string(nameBytes)
 
-		if err := binary.Read(f, binary.BigEndian, &data.offset); err != nil {
-			return fmt.Errorf("error reading offset: %v", err)
-		}
-
-		if err := binary.Read(f, binary.BigEndian, &data.size); err != nil {
-			return fmt.Errorf("error reading size: %v", err)
+		if err := binary.Read(f, binary.BigEndian, &data.Offset); err != nil {
+			return fmt.Errorf("error reading Offset: %v", err)
 		}
 
-		fmt.Println("readFile =", data.name, "at Offset =", data.offset)
+		if err := binary.Read(f, binary.BigEndian, &data.Size); err != nil {
+			return fmt.Errorf("error reading Size: %v", err)
+		}
+
+		fmt.Println("readFile =", data.Name, "at Offset =", data.Offset)
 
 		fileList = append(fileList, data)
 	}
 
 	for _, d := range fileList {
-		d.name = "/" + name + d.name
-		path := filepath.Join(root, filepath.Dir(d.name))
+		d.Name = "/" + name + d.Name
+		path := filepath.Join(root, filepath.Dir(d.Name))
 
 		if err := os.MkdirAll(path, os.ModePerm); err != nil {
 			return fmt.Errorf("error creating directory: %v", err)
 		}
 
-		w, err := os.Create(filepath.Join(root, d.name))
+		w, err := os.Create(filepath.Join(root, d.Name))
 		if err != nil {
 			return fmt.Errorf("error creating file: %v", err)
 		}
 
-		_, err = f.Seek(int64(d.offset), 0)
+		_, err = f.Seek(int64(d.Offset), 0)
 		if err != nil {
 			w.Close()
-			return fmt.Errorf("error seeking to offset: %v", err)
+			return fmt.Errorf("error seeking to Offset: %v", err)
 		}
 
-		buf := make([]byte, d.size)
+		buf := make([]byte, d.Size)
 		_, err = f.Read(buf)
 		if err != nil {
 			w.Close()
@@ -123,7 +125,7 @@ func Unpack(from string) error {
 		}
 
 		w.Close()
-		fmt.Println("writeFile =", filepath.Join(root, d.name))
+		fmt.Println("writeFile =", filepath.Join(root, d.Name))
 	}
 
 	return nil

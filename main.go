@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/zhuweiyou/wxapkg/decrypter"
+	"github.com/zhuweiyou/wxapkg/unpacker"
 	"os"
 	"strings"
 )
@@ -26,15 +28,15 @@ func main() {
 	needDecrypt := strings.HasPrefix(wxid, "wx")
 	if needDecrypt {
 		fmt.Println("wxid", wxid)
-		err := Decrypt(from, wxid)
+		err := decrypter.DefaultDecrypt(from, wxid)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		from += DecryptTo
+		from += decrypter.DefaultDecryptTo
 	}
 
-	err := Unpack(from)
+	err := unpacker.Unpack(from)
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -1,4 +1,4 @@
-module wxapkg
+module github.com/zhuweiyou/wxapkg
 
 go 1.20
 

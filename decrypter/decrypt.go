@@ -1,4 +1,4 @@
-package main
+package decrypter
 
 import (
 	"crypto/aes"
@@ -18,19 +18,7 @@ type DecryptOptions struct {
 	DecWxapkgPath string
 }
 
-const DecryptTo = "_decrypt"
-
-func Decrypt(from string, wxid string) error {
-	return decrypt(&DecryptOptions{
-		Wxid:          wxid,
-		Iv:            "the iv: 16 bytes",
-		Salt:          "saltiest",
-		WxapkgPath:    from,
-		DecWxapkgPath: from + DecryptTo,
-	})
-}
-
-func decrypt(options *DecryptOptions) error {
+func Decrypt(options *DecryptOptions) error {
 	dataByte, err := os.ReadFile(options.WxapkgPath)
 	if err != nil {
 		log.Fatal(err)
@@ -59,4 +47,16 @@ func decrypt(options *DecryptOptions) error {
 	}
 
 	return nil
+}
+
+const DefaultDecryptTo = "_decrypt"
+
+func DefaultDecrypt(from string, wxid string) error {
+	return Decrypt(&DecryptOptions{
+		Wxid:          wxid,
+		Iv:            "the iv: 16 bytes",
+		Salt:          "saltiest",
+		WxapkgPath:    from,
+		DecWxapkgPath: from + DefaultDecryptTo,
+	})
 }

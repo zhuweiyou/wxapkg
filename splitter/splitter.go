@@ -1,7 +1,7 @@
 package splitter
 
 func Split(from string) error {
-	appConfig, err := ReadAppConfigJson(from)
+	appConfig, err := ReadAppConfig(from)
 	if err != nil {
 		return err
 	}

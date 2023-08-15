@@ -7,7 +7,7 @@ import (
 	"path"
 )
 
-func ReadAppServiceJs(from string) (gjson.Result, error) {
+func ReadAppService(from string) (gjson.Result, error) {
 	fmt.Println("read app-service.js")
 	bytes, err := os.ReadFile(path.Join(from, "app-service.js"))
 	if err != nil {

@@ -7,7 +7,7 @@ import (
 	"path"
 )
 
-func ReadAppConfigJson(from string) (gjson.Result, error) {
+func ReadAppConfig(from string) (gjson.Result, error) {
 	fmt.Println("read app-config.json")
 	bytes, err := os.ReadFile(path.Join(from, "app-config.json"))
 	if err != nil {

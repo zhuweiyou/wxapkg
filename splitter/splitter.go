@@ -11,7 +11,12 @@ func Split(from string) error {
 		return err
 	}
 
-	err = json_writer.Write(from, appConfig)
+	appService, err := source_reader.ReadAppServiceJs(from)
+	if err != nil {
+		return err
+	}
+
+	err = json_writer.Write(from, appConfig, appService)
 	if err != nil {
 		return err
 	}

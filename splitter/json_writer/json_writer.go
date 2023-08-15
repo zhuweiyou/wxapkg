@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func Write(from string, appConfig gjson.Result) error {
+func Write(from string, appConfig gjson.Result, appService string) error {
 	err := WriteApp(from, appConfig)
 	if err != nil {
 		return err
@@ -20,7 +20,7 @@ func Write(from string, appConfig gjson.Result) error {
 		return err
 	}
 
-	err = WriteComponent(from, appConfig)
+	err = WriteComponent(from, appService)
 	if err != nil {
 		return err
 	}
@@ -66,7 +66,7 @@ func WritePage(from string, appConfig gjson.Result) error {
 	return nil
 }
 
-func WriteComponent(from string, appConfig gjson.Result) error {
+func WriteComponent(from string, appService string) error {
 	fmt.Println("write component json")
 	return nil
 }

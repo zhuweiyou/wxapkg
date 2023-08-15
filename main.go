@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/zhuweiyou/wxapkg/decrypter"
-	"github.com/zhuweiyou/wxapkg/formatter"
+	"github.com/zhuweiyou/wxapkg/formatter/slash_formatter"
 	"github.com/zhuweiyou/wxapkg/unpacker"
 	"os"
 )
@@ -18,7 +18,7 @@ func main() {
 		return
 	}
 
-	from := formatter.FormatSlash(os.Args[1])
+	from := slash_formatter.Format(os.Args[1])
 	fmt.Println("from", from)
 
 	wxid, needDecrypt := decrypter.GetWxid(from)

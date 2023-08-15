@@ -1,4 +1,4 @@
-package splitter
+package source_reader
 
 import (
 	"fmt"

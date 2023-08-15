@@ -1,17 +1,17 @@
 package splitter
 
+import (
+	"github.com/zhuweiyou/wxapkg/splitter/json_writer"
+	"github.com/zhuweiyou/wxapkg/splitter/source_reader"
+)
+
 func Split(from string) error {
-	appConfig, err := ReadAppConfigJson(from)
+	appConfig, err := source_reader.ReadAppConfigJson(from)
 	if err != nil {
 		return err
 	}
 
-	err = WriteAppJson(from, appConfig)
-	if err != nil {
-		return err
-	}
-
-	err = WritePageJson(from, appConfig)
+	err = json_writer.Write(from, appConfig)
 	if err != nil {
 		return err
 	}

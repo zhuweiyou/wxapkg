@@ -1,7 +1,7 @@
-package formatter
+package slash_formatter
 
 import "strings"
 
-func FormatSlash(path string) string {
+func Format(path string) string {
 	return strings.ReplaceAll(path, "\\", "/")
 }

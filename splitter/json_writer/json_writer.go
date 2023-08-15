@@ -1,15 +1,34 @@
-package splitter
+package json_writer
 
 import (
 	"fmt"
 	"github.com/tidwall/gjson"
-	"github.com/zhuweiyou/wxapkg/formatter"
+	"github.com/zhuweiyou/wxapkg/formatter/json_formatter"
 	"os"
 	"path"
 	"strings"
 )
 
-func WriteAppJson(from string, appConfig gjson.Result) error {
+func Write(from string, appConfig gjson.Result) error {
+	err := WriteApp(from, appConfig)
+	if err != nil {
+		return err
+	}
+
+	err = WritePage(from, appConfig)
+	if err != nil {
+		return err
+	}
+
+	err = WriteComponent(from, appConfig)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func WriteApp(from string, appConfig gjson.Result) error {
 	fmt.Println("write app.json")
 	appConfigMap := appConfig.Map()
 	appConfigGlobalMap := appConfigMap["global"].Map()
@@ -26,7 +45,7 @@ func WriteAppJson(from string, appConfig gjson.Result) error {
 	}
 
 	appJsonPath := path.Join(from, "app.json")
-	err := os.WriteFile(appJsonPath, formatter.FormatJson(appJsonMap), 0666)
+	err := os.WriteFile(appJsonPath, json_formatter.From(appJsonMap), 0666)
 	if err != nil {
 		return fmt.Errorf("write %s err: %v", appJsonPath, err)
 	}
@@ -34,11 +53,11 @@ func WriteAppJson(from string, appConfig gjson.Result) error {
 	return nil
 }
 
-func WritePageJson(from string, appConfig gjson.Result) error {
+func WritePage(from string, appConfig gjson.Result) error {
 	fmt.Println("write page json")
 	for pagePath, pageConfig := range appConfig.Get("page").Map() {
 		fmt.Println(pagePath, pageConfig)
-		err := os.WriteFile(strings.Replace(path.Join(from, pagePath), ".html", ".json", 1), formatter.FormatJsonString(pageConfig.String()), 0666)
+		err := os.WriteFile(strings.Replace(path.Join(from, pagePath), ".html", ".json", 1), json_formatter.FromString(pageConfig.String()), 0666)
 		if err != nil {
 			return fmt.Errorf("write %s err: %v", pagePath, err)
 		}
@@ -47,7 +66,7 @@ func WritePageJson(from string, appConfig gjson.Result) error {
 	return nil
 }
 
-func WriteComponentJson(from string, appConfig gjson.Result) error {
+func WriteComponent(from string, appConfig gjson.Result) error {
 	fmt.Println("write component json")
 	return nil
 }

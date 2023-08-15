@@ -1,18 +1,18 @@
-package json_formatter
+package json_util
 
 import (
 	"encoding/json"
 	"strings"
 )
 
-func FromString(s string) []byte {
+func FormatFromString(s string) []byte {
 	bytes := []byte(s)
 	var data any
 	json.Unmarshal(bytes, &data)
-	return From(data)
+	return Format(data)
 }
 
-func From(data any) []byte {
+func Format(data any) []byte {
 	formatted, _ := json.MarshalIndent(data, "", strings.Repeat(" ", 4))
 	return formatted
 }

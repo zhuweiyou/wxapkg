@@ -3,7 +3,7 @@ package json_writer
 import (
 	"fmt"
 	"github.com/tidwall/gjson"
-	"github.com/zhuweiyou/wxapkg/formatter/json_formatter"
+	"github.com/zhuweiyou/wxapkg/util/json_util"
 	"os"
 	"path"
 	"strings"
@@ -45,7 +45,7 @@ func WriteApp(from string, appConfig gjson.Result) error {
 	}
 
 	appJsonPath := path.Join(from, "app.json")
-	err := os.WriteFile(appJsonPath, json_formatter.From(appJsonMap), 0666)
+	err := os.WriteFile(appJsonPath, json_util.Format(appJsonMap), 0666)
 	if err != nil {
 		return fmt.Errorf("write %s err: %v", appJsonPath, err)
 	}
@@ -57,7 +57,7 @@ func WritePage(from string, appConfig gjson.Result) error {
 	fmt.Println("write page json")
 	for pagePath, pageConfig := range appConfig.Get("page").Map() {
 		fmt.Println(pagePath, pageConfig)
-		err := os.WriteFile(strings.Replace(path.Join(from, pagePath), ".html", ".json", 1), json_formatter.FromString(pageConfig.String()), 0666)
+		err := os.WriteFile(strings.Replace(path.Join(from, pagePath), ".html", ".json", 1), json_util.FormatFromString(pageConfig.String()), 0666)
 		if err != nil {
 			return fmt.Errorf("write %s err: %v", pagePath, err)
 		}

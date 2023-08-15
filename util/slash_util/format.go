@@ -1,4 +1,4 @@
-package slash_formatter
+package slash_util
 
 import "strings"
 

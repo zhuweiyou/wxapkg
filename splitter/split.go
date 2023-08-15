@@ -6,12 +6,12 @@ import (
 )
 
 func Split(from string) error {
-	appConfig, err := source_reader.ReadAppConfigJson(from)
+	appConfig, err := source_reader.ReadAppConfig(from)
 	if err != nil {
 		return err
 	}
 
-	appService, err := source_reader.ReadAppServiceJs(from)
+	appService, err := source_reader.ReadAppService(from)
 	if err != nil {
 		return err
 	}

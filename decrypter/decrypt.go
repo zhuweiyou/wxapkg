@@ -8,7 +8,6 @@ import (
 	"golang.org/x/crypto/pbkdf2"
 	"log"
 	"os"
-	"strings"
 )
 
 type DecryptOptions struct {
@@ -60,16 +59,4 @@ func DefaultDecrypt(from string, wxid string) error {
 		WxapkgPath:    from,
 		DecWxapkgPath: from + DefaultDecryptTo,
 	})
-}
-
-func GetWxid(from string) (string, bool) {
-	parts := strings.Split(from, "/")
-
-	var wxid string
-	wxidIndex := len(parts) - 3
-	if wxidIndex >= 0 {
-		wxid = parts[wxidIndex]
-	}
-
-	return wxid, strings.HasPrefix(wxid, "wx")
 }

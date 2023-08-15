@@ -12,8 +12,9 @@ import (
 func WritePage(from string, appConfig gjson.Result) error {
 	fmt.Println("write page json")
 	for pagePath, pageConfig := range appConfig.Get("page").Map() {
-		fmt.Println(pagePath, pageConfig)
-		err := os.WriteFile(strings.Replace(path.Join(from, pagePath), ".html", ".json", 1), json_util.FormatFromString(pageConfig.String()), 0666)
+		window := pageConfig.Get("window")
+		fmt.Println(pagePath, window)
+		err := os.WriteFile(strings.Replace(path.Join(from, pagePath), ".html", ".json", 1), json_util.FormatFromString(window.String()), 0666)
 		if err != nil {
 			return fmt.Errorf("write %s err: %v", pagePath, err)
 		}

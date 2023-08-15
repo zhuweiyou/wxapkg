@@ -18,7 +18,7 @@ func main() {
 		return
 	}
 
-	from := formatter.FormatFrom(os.Args[1])
+	from := formatter.FormatSlash(os.Args[1])
 	fmt.Println("from", from)
 
 	wxid, needDecrypt := decrypter.GetWxid(from)

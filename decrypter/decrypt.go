@@ -18,7 +18,7 @@ type DecryptOptions struct {
 	DecWxapkgPath string
 }
 
-func Decrypt(options *DecryptOptions) error {
+func DecryptWithOptions(options *DecryptOptions) error {
 	dataByte, err := os.ReadFile(options.WxapkgPath)
 	if err != nil {
 		log.Fatal(err)
@@ -51,8 +51,8 @@ func Decrypt(options *DecryptOptions) error {
 
 const DefaultDecryptTo = "_decrypt"
 
-func DefaultDecrypt(from string, wxid string) error {
-	return Decrypt(&DecryptOptions{
+func Decrypt(from string, wxid string) error {
+	return DecryptWithOptions(&DecryptOptions{
 		Wxid:          wxid,
 		Iv:            "the iv: 16 bytes",
 		Salt:          "saltiest",

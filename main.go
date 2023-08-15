@@ -24,7 +24,7 @@ func main() {
 	wxid, needDecrypt := decrypter.GetWxid(from)
 	if needDecrypt {
 		fmt.Println("wxid", wxid)
-		err := decrypter.DefaultDecrypt(from, wxid)
+		err := decrypter.Decrypt(from, wxid)
 		if err != nil {
 			fmt.Println(err)
 			return

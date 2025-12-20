@@ -20,9 +20,15 @@ jobs:
           go-version-file: go.mod
       - name: Build
         run: |
-          GOOS=windows GOARCH=amd64 go build
+          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o wxapkg_windows_amd64.exe
+          GOOS=windows GOARCH=arm64 go build -ldflags="-s -w" -o wxapkg_windows_arm64.exe
+          GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o wxapkg_macos_amd64
+          GOOS=darwin GOARCH=arm64 go build -ldflags="-s -w" -o wxapkg_macos_arm64
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            wxapkg.exe
+            wxapkg_windows_amd64.exe
+            wxapkg_windows_arm64.exe
+            wxapkg_macos_amd64
+            wxapkg_macos_arm64

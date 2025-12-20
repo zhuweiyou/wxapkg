@@ -1,3 +1,4 @@
 .idea
-wxapkg.iml
-wxapkg.exe
+/wxapkg.iml
+/wxapkg.exe
+/wxapkg

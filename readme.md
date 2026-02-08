@@ -2,6 +2,10 @@
 
 🚀 微信小程序一键解密和解包工具
 
+## 因本人无精力跟进微信的更新, 本仓库已归档, 请使用其他更完善的开源工具
+
+- `wedecode` - [https://github.com/biggerstar/wedecode](https://github.com/biggerstar/wedecode)
+
 ## 📥 下载
 
 在 [Release](https://github.com/zhuweiyou/wxapkg/releases/) 页面下载对应平台的二进制文件：
